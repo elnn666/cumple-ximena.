@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Ximena</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: 'Courier New', monospace;
+}
+
+body{
+    background:black;
+    overflow:hidden;
+    height:100vh;
+}
+
+/* MATRIX */
+
+canvas{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+}
+
+/* TEXTO CENTRAL */
+
+.container{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    z-index:10;
+    text-align:center;
+}
+
+.glow{
+    font-size:120px;
+    font-weight:bold;
+    color:#ffb6d9;
+
+    text-shadow:
+        0 0 5px #ffb6d9,
+        0 0 10px #ffb6d9,
+        0 0 20px #ff69b4,
+        0 0 40px #ff69b4,
+        0 0 80px #ff69b4;
+
+    animation:pulse 2s infinite alternate;
+}
+
+.sub{
+    margin-top:20px;
+    font-size:22px;
+    color:white;
+    letter-spacing:5px;
+
+    text-shadow:
+        0 0 10px white;
+}
+
+.heart{
+    position:absolute;
+    color:#ff69b4;
+    font-size:25px;
+    animation:float 6s linear infinite;
+}
+
+/* ANIMACIONES */
+
+@keyframes pulse{
+
+    from{
+        transform:scale(1);
+    }
+
+    to{
+        transform:scale(1.05);
+    }
+}
+
+@keyframes float{
+
+    from{
+        transform:translateY(100vh);
+        opacity:1;
+    }
+
+    to{
+        transform:translateY(-100px);
+        opacity:0;
+    }
+}
+
+/* RESPONSIVE */
+
+@media(max-width:768px){
+
+    .glow{
+        font-size:70px;
+    }
+
+    .sub{
+        font-size:16px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<canvas id="matrix"></canvas>
+
+<div class="container">
+
+    <div class="glow">
+        HAPPY
+    </div>
+
+    <div class="sub">
+        ✨ FELIZ CUMPLEAÑOS XIMENA ✨
+    </div>
+
+</div>
+
+<script>
+
+/* MATRIX EFFECT */
+
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const letters =
+"ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()*&^%";
+
+const fontSize = 14;
+
+const columns = canvas.width / fontSize;
+
+const drops = [];
+
+for(let x = 0; x < columns; x++){
+
+    drops[x] = 1;
+}
+
+function draw(){
+
+    ctx.fillStyle = "rgba(0,0,0,0.05)";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    ctx.fillStyle = "#ffd1ea";
+    ctx.font = fontSize + "px monospace";
+
+    for(let i = 0; i < drops.length; i++){
+
+        const text =
+        letters[Math.floor(Math.random() * letters.length)];
+
+        ctx.fillText(
+            text,
+            i * fontSize,
+            drops[i] * fontSize
+        );
+
+        if(
+            drops[i] * fontSize > canvas.height
+            &&
+            Math.random() > 0.975
+        ){
+
+            drops[i] = 0;
+        }
+
+        drops[i]++;
+    }
+}
+
+setInterval(draw,35);
+
+/* CORAZONES */
+
+function createHeart(){
+
+    const heart = document.createElement("div");
+
+    heart.classList.add("heart");
+
+    heart.innerHTML = "❤";
+
+    heart.style.left =
+    Math.random() * 100 + "vw";
+
+    heart.style.fontSize =
+    Math.random() * 30 + 15 + "px";
+
+    heart.style.animationDuration =
+    Math.random() * 3 + 3 + "s";
+
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+
+        heart.remove();
+
+    },6000);
+}
+
+setInterval(createHeart,300);
+
+</script>
+
+</body>
+</html>
